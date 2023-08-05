@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { request_to_send_opt } from '../services/twilio_phone_verification';
 
 // import prisma client
 import { PrismaClient } from '@prisma/client';
@@ -56,7 +57,6 @@ let update_user_profile = async (req: Request, res: Response) => {
             where: { username: user.username },
             data: {
                 name: req.body.name,
-                phone: req.body.phone,
                 dob: new Date(req.body.dob)
             }
         });

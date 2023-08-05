@@ -44,4 +44,4 @@ const phone = check('phone').custom(async (value: string) => {
 
 
 
-  export const update_user_validation = [phoneExists, phone, dob]
+  export const update_user_validation = [dob]

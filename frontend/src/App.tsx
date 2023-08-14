@@ -10,6 +10,7 @@ import AdDetailsPage from "./pages/AdDetails.page";
 // import CategoryList from "./components/Homepage/CategoryList";
 import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
+import UserProfile from "./pages/UserProfile.page";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/register/" element={<Register />} />
           <Route path="/ads/post-ad/" element={<PostAd />} />
           <Route path="/ads/:id/" element={<AdDetailsPage />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

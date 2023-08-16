@@ -114,8 +114,8 @@ return(
             >
                     <Text as="h2" 
                           fontSize="xl" 
-                          mt={"20%"}
-                          mb={"5%"}
+                          mt={"100px"}
+                          mb={"20px"}
                     >
                         <Text as="span" fontWeight="bold">Name:</Text> {userInfo?.name}
                         <br />

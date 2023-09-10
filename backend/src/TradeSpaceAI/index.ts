@@ -1,9 +1,4 @@
 import {
-    category_analyser,
-    threat_score_categorical_mismatch
-} from "./category_analyser";
-
-import {
     exif_analyser,
     threat_score_downloaded_image,
     threat_score_stale_image,
@@ -17,7 +12,6 @@ import {
 } from "./natural_language_analyser";
 
 import { load_words } from "./natural_language_analyser/profanity_detector";
-import { load_model } from "./category_analyser/mobilenet";
 
 
 // active loader
@@ -27,7 +21,6 @@ export const initiate_ts_ai = async () => {
         console.log('\x1b[0m', '');
         return;
     }
-    await load_model();
     load_words();
     console.log('\x1b[36m%s\x1b[0m', 'TradeSpaceAI Turned On ⚡');
     console.log('\x1b[0m', '');
@@ -52,8 +45,7 @@ export const ai_judge = async (ad: any) => {
         total_possible_threat_score =
             threat_score_downloaded_image
             + threat_score_stale_image
-            + threat_score_tampered_image
-            + threat_score_categorical_mismatch;
+            + threat_score_tampered_image;
     }
 
     total_possible_threat_score += threat_score_profanity;
@@ -66,7 +58,7 @@ export const ai_judge = async (ad: any) => {
     const ad_freshness_threshold_millis = 1000 * 60 * 60 * 24 * 1; // 1 day
 
     let exif_verdict = null;
-    let category_verdict = null;
+    let category_verdict: { specified_category_probability: number } = null;
     let nlp_verdict = null;
 
     let weighted_threat_score = 0;
@@ -74,8 +66,6 @@ export const ai_judge = async (ad: any) => {
     if (ad.is_sell_ad) {
         exif_verdict = await exif_analyser(ad_image_url, ad_freshness_threshold_millis);
         weighted_threat_score += exif_verdict.threat_score;
-        category_verdict = await category_analyser(ad_image_url, ad_category);
-        weighted_threat_score += category_verdict.threat_score;
     }
     nlp_verdict = await nlp_analyser(ad_description);
     weighted_threat_score += nlp_verdict.threat_score;
@@ -85,7 +75,7 @@ export const ai_judge = async (ad: any) => {
     const ai_verdict = {
         weighted_threat_score: weighted_threat_score,
         exif_verdict: exif_verdict.verdict,
-        category_verdict: category_verdict.verdict,
+        category_verdict: category_verdict,
         nlp_verdict: nlp_verdict.verdict
     }
 

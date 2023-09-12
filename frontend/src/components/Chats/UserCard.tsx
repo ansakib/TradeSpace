@@ -86,22 +86,32 @@ const UserCard = ({
   };
 
   console.log("Inbox item:");
-  console.log(inboxItem);
+  // console.log(inboxItem);
+  // why is is_my_message undefined?
+  console.log(inboxItem.last_message);
+  console.log(inboxItem.last_message.message);
+  console.log(inboxItem.last_message.is_my_message);
+
 
   return (
     <Card
       as={Link}
       id={inboxItem.thread_id}
       direction="row"
-      overflow="hidden"
+      // overflow={"hidden"}
       variant="unstyled"
       width="100%"
-      height="100px"
+      height="fit-content"
       marginBottom={2}
       // print the id of the card when clicked
       onClick={(event) => {
         handleOpenChat(event);
       }}
+      // if the last message is read by the receiver and it is my message, then render the card with gray background
+      // otherwise, render the card with white background
+      backgroundColor={(inboxItem.unread_messages_count>0) ? "gray.200" : "white"}
+
+      
     >
       <Image
         objectFit="cover"
@@ -128,6 +138,9 @@ const UserCard = ({
           <Flex flexDirection="row" justifyContent="space-between">
             <Text fontSize="md" marginRight={2}>
               {inboxItem.last_message.message}
+              {/* {inboxItem.last_message.is_my_message `You- ${inboxItem.last_message.message}`
+                                                    : inboxItem.last_message.message
+              } */}
             </Text>
             <Text fontSize="md" textColor={"gray.500"}>
               -{formatTimestamp(inboxItem.last_message.timestamp)}

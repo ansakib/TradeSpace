@@ -86,7 +86,7 @@ const GetChats = () => {
         const inbox_response = await getInbox();
         setInbox(inbox_response);
       }
-    }, 1000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [currentThread]);

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AdDetails from "../components/Ads/AdDetails/AdDetails";
 import Layout from "../layout/Layout";
 import { AdDetailsType, adService } from "../services/ad.service";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, useToast } from "@chakra-ui/react";
 import { getThread } from "../services/chat.service";
 
@@ -10,6 +10,9 @@ const AdDetailsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [ad, setAd] = useState<AdDetailsType>();
   const { id } = useParams();
+
+  let navigate = useNavigate();
+
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -29,6 +32,7 @@ const AdDetailsPage = () => {
     try {
       const { thread_id } = await getThread(+id!);
       console.log(thread_id);
+      navigate("/chat");
     } catch (error) {
       // show toast
       console.log(error);
